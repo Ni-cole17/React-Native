@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet,Image,Button,Text,TouchableOpacity} from 'react-native';
+import {View, StyleSheet,Image,Button,Text,TouchableOpacity, Alert} from 'react-native';
+import imagex from './assets/icons/desligada.png';
+import imagey from './assets/icons/ligada.png';
 import Torch from 'react-native-torch';
 import RNshake from 'react-native-shake';
-
 
 const App = ()=> {
   const [toggle, setToggle] = useState(false);
@@ -11,7 +12,8 @@ const App = ()=> {
   const [customInterval,setCustomInterval] = useState();
   const [clock, setClock] = useState(true);
   const [buttonpress, setbuttonpress] = useState(false);
-  var passou = false;
+
+
 
   const startTime = () => {
       setbuttonpress(true)
@@ -19,28 +21,26 @@ const App = ()=> {
       setCustomInterval(
         setInterval(() =>{
           changeTime();
+          
+    
         },1000) 
       )
       }
-
   }
 
-  const startTemp = () => {
+  const startTime2 = () => {
     setbuttonpress(true)
     if(!buttonpress){
     setCustomInterval(
       setInterval(() =>{
-        console.log(`Minutos: ${minutes}`);
-        console.log(`Segundos: ${seconds}`);
-        console.log(passou)
-        if(!passou){
+        if(minutes !== 0 || seconds !==0){
         changeTemp();
         }
       },1000)
     )
     }
-} 
-
+}
+  
   const stopTimer = () => {
     setbuttonpress(false);
     if(customInterval){
@@ -53,7 +53,6 @@ const App = ()=> {
     setMinutes(0);
     setSeconds(0);
   };
-
   const changeTime = () => {
     setSeconds((prevState)=>{
       if(prevState + 1 == 60){
@@ -65,7 +64,7 @@ const App = ()=> {
   };
 
   const changeTemp1 = () => {
-    setSeconds(60); 
+    setMinutes(1);
   };
   const changeTemp15 = () => {
     setSeconds(15);
@@ -76,14 +75,14 @@ const App = ()=> {
 
   const changeTemp = () => {
     setSeconds((prevState)=>{
-      console.log(prevState);
-      if(prevState - 1 == 0){
-        passou = true;
+      if((prevState - 1 == 0 || prevState==0)&& minutes !== 0){
+        setMinutes(minutes-1);
+        return 60;
       }
       return prevState < 1 ? 0 : prevState - 1;
     })
   };
-  
+
 
   const handleOnPress = () => setToggle(oldToggle => !oldToggle)
 
@@ -107,7 +106,7 @@ const App = ()=> {
     <TouchableOpacity onPress={handleOnPress}>
     <Image
     style={toggle ? style.lightingon : style.lightingoff}
-    source={toggle ? require('./assets/icons/ligada.png') : require('./assets/icons/desligada.png')}
+      source={toggle ? imagey : imagex}
     />
     </TouchableOpacity>
 
@@ -117,7 +116,7 @@ const App = ()=> {
     </Text>
 
     <View style={style.ButtonControle}>
-      <Button title='Iniciar' color={buttonpress ? 'green' : 'blue'} onPress={clock ? startTemp : startTime}/>
+      <Button title='Iniciar' color={buttonpress ? 'green' : 'blue'} onPress={clock ? startTime2 : startTime}/>
       <Button title='Parar' color={buttonpress ? 'blue' : 'green'} onPress={clock ? stopTimer : stopTimer}/>
       <Button title='Limpar' color={'blue'} onPress={clear}/>
     </View>
