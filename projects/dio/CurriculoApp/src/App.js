@@ -8,6 +8,8 @@ import {
   Alert,
   TouchableOpacity,
   Image,
+  ScrollView,
+  Linking,
 } from 'react-native';
 import foto from './assets/foto.jpg'
 import Icon from 'react-native-vector-icons/Feather'
@@ -18,58 +20,63 @@ const App = () => {
   function handleRedeSocial(rede_social){
       switch(rede_social){
         case 'linkedin':
-          Alert.alert('Meu Linkedin','https://www.linkedin.com/in/nicole-charron/')
+          Linking.openURL('https://www.linkedin.com/in/nicole-charron/')
         break
         case 'github':
-          Alert.alert('Meu GitHub','https://github.com/Ni-cole17')
+          Linking.openURL('https://github.com/Ni-cole17')
         break
         case 'mail':
-          Alert.alert('Meu Email','nicole.charron17@gmail.com')
+          Linking.openURL('mailto:nicole.charron17@gmail.com')
         break
       }
   }
 
   return(
-    <SafeAreaView>
+    <ScrollView>
       <View style={style.page}>
-       <Image source={foto} style={style.foto} />
-        <Text style={style.nome}>Nicole Charron</Text>
-        <Text style={style.funcao}>Graduanda em Engenharia Biomédica</Text>
-        <View style={style.redes_sociais}>
+      <Image source={foto} style={style.foto} />
+      <Text style={style.nome}>Nicole Charron</Text>
+      <Text style={style.funcao}>Graduanda em Engenharia Biomédica</Text>
+      <View style={style.redes_sociais}>
           <TouchableOpacity>
-          <Icon name="github" size={30} />   
+          <Icon name="github" size={30} color={'white'} onPress={() => handleRedeSocial('github')} />   
           </TouchableOpacity>
           <TouchableOpacity>
-          <Icon name="mail" size={30}/> 
+          <Icon name="mail" size={30} color={'white'} onPress={() => handleRedeSocial('mail')}/> 
           </TouchableOpacity>
           <TouchableOpacity>     
-          <Icon name="linkedin" size={30}/>
+          <Icon name="linkedin" size={30} color={'white'} onPress={() => handleRedeSocial('linkedin')}/>
           </TouchableOpacity>
         </View>
+      
       </View>
 
-      <Card />
+      <Card titulo="Formação Acadêmica">
+          <Text style={style.card_content_text}>Engenharia Biomédica | UFPE</Text>  
+      </Card>
 
-      <Card />
-  
+      <Card titulo="Experiências Profissionais">
+          <Text style={style.card_content_text}>Gerente de Execução | BioTech Consultoria</Text>
+          <Text style={style.card_content_text_description}>Responsável por garantir uma boa execução dos projetos, gerir a equipe, promover inovações nos serviços e manter o contato com os clientes.</Text> 
+          <Text style={style.card_content_text}>Assessora de Projetos | BioTech Consultoria</Text>
+          <Text style={style.card_content_text_description}>Responsável pela execução dos projetos e pela prospecção ativa de leads. </Text> 
+      </Card>
 
-    </SafeAreaView>
+      <Card titulo="Experiências Voluntárias">
+          <Text style={style.card_content_text}>Desenvolvedora WEB Jr. | Além da Cura</Text>
+          <Text style={style.card_content_text_description}>Responsável pela manutenção e inovação do Website.</Text>      
+      </Card>
+    </ScrollView>
   );
 };
 
 const style = StyleSheet.create({
   page:{
-    backgroundColor: '#E7E7E7',
-    flex: 1,
-    justifyContent: 'center',
-    marginTop: 200,
-    alignItems: 'center',
-    marginBottom: 50,
-  },
-  container_cabecalho:{
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '100%',
     marginTop: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   foto: {
     width: 150,
@@ -92,8 +99,17 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     width: '60%',
     marginTop: 20,
-    backgroundColor: 'red',
   },
+  card_content_text: {
+    color: '#939393',
+    marginBottom: 10,
+    fontSize:14,
+  },
+  card_content_text_description: {
+    color: '#939393',
+    marginBottom: 10,
+    fontSize:10,
+  }
 });
 
 export default App;
